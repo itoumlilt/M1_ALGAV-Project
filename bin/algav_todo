@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [[ $ALGAV_ENV_FLAG != "true" ]]; then
+    echo "Error : ALGAV Env is not launched yet."
+    echo "You must source ./algav_env before working on this project."
+    exit 1;
+fi
+
+TODO_NOTES=`cat $ALGAV_PWD/TODO.txt | grep -ne "^\-.*"`
+TODO_COMMENTS=`find $ALGAV_SRC_PWD -print | xargs grep -ni "@TODO" 2>/dev/null
+`
+
+
+if [[ $TODO_NOTES || $TODO_COMMENTS ]]; then
+    echo "================= TODO.TXT ===================
+$TODO_NOTES
+
+=============== COMMENTS ===================
+$TODO_COMMENTS"
+    exit 1
+else
+    echo "ALL DONE !!"
+    exit 0
+fi

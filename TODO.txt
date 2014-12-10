@@ -1,0 +1,7 @@
+# Cahier de charges du projet :
+
+OK- Ne pas oublier de config le mode FAC, et le env PishFish en créant le repo git
+- Importer le WayeManual
+- Coder d'abord les primitives
+- Une seule API suffit pour les affichages, on en décidera !
+- Les algos du TD ( Brandais ) ne sont pas tous optimaux.

@@ -1,0 +1,21 @@
+ALGAV(1)                   ALGAV General Commands Manual                  ALGAV(1)
+
+NAME
+     algav_man_add -- 
+
+SYNOPSIS
+     algav_man_add ...
+
+DESCRIPTION
+     ....
+
+EXIT STATUS
+     ....
+
+SEE ALSO
+     algav_man(1)
+
+STANDARDS
+     ALGAV Manual is legal to Posix.1 Standards
+
+ALGAV                             Nov 27, 2014                             ALGAV

@@ -1,0 +1,100 @@
+#!/bin/bash
+
+# Env launch checking :
+if [[ $ALGAV_ENV_FLAG != "true" ]]; then
+    echo "Error : ALGAV Env is not launched yet."
+    echo "You must source ./algav_env before working on this project."
+    exit 1;
+fi
+
+# Number of args checking
+if [[ $# -ne 1 ]]; then
+    echo "Error : incorrect number of args"
+    echo "Usage : algav_man_add <newCommandOrFunction>"
+    exit 1;
+fi
+
+# The new command ( or function ) must not exist
+search=`ls $ALGAV_MAN_PWD | grep $1`
+if [[ $search == $1 ]]; then
+    echo "Error : $1 already exist in algav_man"
+    exit 1;
+fi
+
+# command or function ?
+type=0
+while [[ $type -ne 1 && $type -ne 2 ]]; do
+    echo "Is your new entry :"
+    echo "1: a Binary command"
+    echo "2: a C function"
+    echo "[1/2] : "
+    read type
+done
+
+# Writing :
+touch $ALGAV_MAN_PWD/$1
+
+if [[ $type -eq 1 ]]; then
+    echo "ALGAV(1)                   ALGAV General Commands Manual                  ALGAV(1)
+
+NAME
+     $1 -- ....
+
+SYNOPSIS
+     $1 ...
+
+DESCRIPTION
+     ....
+
+EXIT STATUS
+     ....
+
+SEE ALSO
+     algav_man(1)
+
+STANDARDS
+     ALGAV Manual is legal to Posix.1 Standards
+
+ALGAV                             Nov 27, 2014                             ALGAV" > $ALGAV_MAN_PWD/$1
+else
+    echo "ALGAV(1)                   ALGAV Library Functions manual              ALGAV(1)
+
+NAME
+     $1 -- ....
+
+LIBRARY
+     ALGAV Library 
+
+SYNOPSIS
+     #include <...>
+     ...
+
+DESCRIPTION
+     ....
+
+EXAMPLES
+     ....
+
+RETURN VALUE
+     ....
+
+BUGS
+     ....
+
+SEE ALSO
+     ....
+
+STANDARDS
+     ALGAV Manual is legal to Posix.1 Standards
+
+ALGAV                             Nov 27, 2014                             ALGAV" > $ALGAV_MAN_PWD/$1
+fi
+
+if [[ $ALGAV_OS_TYPE == "Darwin" ]]; then
+    emacs -a $ALGAV_MAN_PWD/$1
+else
+    eamcs $ALGAV_MAN_PWD/$1
+fi
+
+
+       

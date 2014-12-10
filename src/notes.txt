@@ -1,0 +1,17 @@
+BRD :
+OK - Primitives
+OK - insert
+OK - search
+OK - ComptageMots
+OK - listeMots
+OK - comptageNil
+OK - Hauteur
+   - Profondeur moyenne
+OK - prefixe
+OK - suppression
+   - Fusion
+   - conversion
+   - unit test toute l'oeurvre de shake
+   - comparaison des temps
+   - comparaison des deux structs
+OK - Affichage visuel

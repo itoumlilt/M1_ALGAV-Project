@@ -1,0 +1,29 @@
+ALGAV(1)                   ALGAV General Commands Manual                  ALGAV(1)
+
+NAME
+     algav_todo -- affiche la liste des tâches à faire.
+
+SYNOPSIS
+     algav_todo [-h help]
+
+DESCRIPTION
+     Effectue deux recherches :
+     - Une première dans TODO.txt ( le cahier de cahrges ), pour voir s'il n'y a pas de taches non traitées.
+     - Une deuxième dans tous les fichiers sources ( src/ ), et trouve toutes les lignes où un @TODO est présent.
+
+     Affiche :
+     - La liste des taches non encore traitées, avec le nom du fichier et la ligne.
+     - Un message de congratulation si tout est bon.
+
+     -h    help	    affiche cette page du algav_man
+
+EXIT STATUS
+     Retourne 1 s'il y a encore des taches, 0 si tout est bon.
+
+SEE ALSO
+     algav_man(1)
+
+STANDARDS
+     ALGAV Manual is legal to Posix.1 Standards
+
+ALGAV                             Nov 27, 2014                             ALGAV

@@ -1,0 +1,28 @@
+ALGAV(1)                   ALGAV General Commands Manual                  ALGAV(1)
+
+NAME
+     algav_man -- Affiche la documentation man d'une commande ou fonction
+
+SYNOPSIS
+     algav_man <command | function> [-h help]
+
+DESCRIPTION
+     Cherche une documentation de la commande ou la fonction algav passée en paramètre.
+     La recherche se fait dans ALGAV_MAN_PWD
+
+     Affiche :
+     - Un apercu de la page man de la commande/fonction.
+     - Un message d'erreur si l'entrée n'existe pas dans ALGAV_MEW_PWD
+
+     -h    help	    affiche cette page du algav_man en mode cat
+
+EXIT STATUS
+     0 if success, 1 when failed.
+
+SEE ALSO
+     algav_man(1)
+
+STANDARDS
+    ALGAV Manual is legal to Posix.1 Standards
+
+ALGAV                             Nov 27, 2014                             ALGAV

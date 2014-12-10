@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [[ $ALGAV_ENV_FLAG != "true" ]]; then
+    echo "Error : ALGAV Env is not launched yet."
+    echo "You must source ./algav_env before working on this project."
+    exit 1;
+fi
+
+if [[ $# -ne 1 ]]; then
+    echo "Usage : algav_man <entry>"
+    exit 1
+fi
+
+SEARCH=`ls $ALGAV_MAN_PWD | tr " " "\n" | grep -e "^$1$"`
+
+if [[ $SEARCH != $1 ]]; then
+    echo "No entry for $1"
+    exit 1
+else
+    less $ALGAV_PWD/man/$1
+fi
