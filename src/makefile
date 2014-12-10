@@ -16,6 +16,7 @@ LIB=lib
 INC=include
 OBJ=obj
 BIN=bin
+SVG=svg
 
 all: directories libBRD libTRH
 
@@ -87,4 +88,5 @@ BRDview :
 # clean repository
 ################################################################################
 clean:
-	rm -rf $(LIB) $(BIN) $(OBJ)
+	rm -rf $(LIB) $(BIN) $(OBJ);
+	echo "" > $(SVG)/BRD.svg
