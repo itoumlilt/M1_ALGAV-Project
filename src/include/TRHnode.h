@@ -3,7 +3,7 @@
  * BRDnode component Header
  *
  * @author Mohamed Amin AFFES <mohamed.af@hotmail.fr>
- * @copyright (c) 2014, AFFES
+ * @copyright (c) 2014, affes
  *
  * @version 1.0
  * @package waye/M1/ALGAV
@@ -12,7 +12,7 @@
 #ifndef __TRHNODE_H__
 #define __TRHNODE_H__
 
-extern int global_id = 0;
+extern int global_id;
 
 typedef struct _TRHnode {
   char content;

@@ -6,12 +6,12 @@ OK - ComptageMots
 OK - listeMots
 OK - comptageNil
 OK - Hauteur
-   - Profondeur moyenne
+OK - Profondeur moyenne
 OK - prefixe
 OK - suppression
-   - Fusion
+OK - Fusion
    - conversion
-   - unit test toute l'oeurvre de shake
-   - comparaison des temps
+OK - unit test toute l'oeurvre de shake
+OK - comparaison des temps
    - comparaison des deux structs
 OK - Affichage visuel

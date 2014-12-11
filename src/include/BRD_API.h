@@ -17,6 +17,7 @@
 #include <BRDnode.h>
 #include <BRDtree.h>
 #include <ListWord.h>
+#include <AverageDepth.h>
 
 #define API_LVL 1
 
@@ -26,6 +27,7 @@ int initAPI();
  * Fonctions de construction :
  *****************************************************************************/
 BRDtree* BRDinitTreeFromFile(char* file);
+BRDtree* BRDinitTreeFromShakespeareFiles();
 BRDtree* BRDmergeTwoTrees(BRDtree* tree1, BRDtree* tree2);
 
 /******************************************************************************

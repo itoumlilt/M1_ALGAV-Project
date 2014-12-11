@@ -15,47 +15,33 @@ int main(int argc, char** argv)
   
   if( argc != 2 ){
     fprintf(stderr, "Error : Incorrect number of args\n");
-    fprintf(stderr, "Usage : unit_test_1.c <testFile>\n");
+    fprintf(stderr, "Usage : unit_test_3.c <testFile>\n");
     exit(1);
   }
   
-  printf(" BRDinitTreeFromFile\n");
-
   clock_t begin, end;
   double time_spent;
 
+  printf("1.BRDinitTreeFromFile\n");
   begin = clock();
   BRDtree* tree = BRDinitTreeFromFile(argv[1]);
   end = clock();
   time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-
   printf(" Init Time Spent : %f sec\n\n", time_spent);
 
-  printf("2. J'insère le mot : bonjour\n");
+  printf("%c -- \n", BRDgetContent(BRDgetTopOfTree(tree)));
+  
+  printf("2. Je crée la liste des mots\n");
   begin = clock();
-  BRDaddWord(tree, "bonjour", 7);
+  ListWord* lw = BRDgetListWordFromTree(tree);
   end = clock();
   time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-  printf(" Temps d'insertion : %f sec\n\n", time_spent);
-
-  printf("3. Je recherche le mot : bonjour\n");
-  begin = clock();
-  if( BRDsearchWord(tree, "bonjour", 7) )
-    printf("mot trouvé !\n");
-  else
-    printf("mot non trouvé !\n");
-  end = clock();
-  time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-  printf(" Temps de recherche : %f sec\n\n", time_spent);
-
-  printf("4. Je compte les mots de l'arbre :\n");
-  begin = clock();
-  int nbMots = BRDcountTreeWords(tree);
-  end = clock();
-  time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-  printf(" Nombre total de mots = %d\n", nbMots);
-  printf(" Temps d'exec : %f sec\n\n", time_spent);
-
+  printf("l\n");
+  LWprintAllWords(lw);
+  printf("ll\n");
+  LWfreeRecursive(lw);
+  printf(" Temps de création de la liste : %f sec\n\n", time_spent);
+  
   printf(" BRDexportSVG\n");
   BRDexportToSvgFile(tree, "./svg/BRD.svg");
   

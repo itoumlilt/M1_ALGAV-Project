@@ -23,7 +23,11 @@
  * ( ou primitives en langage STL ... )
  *****************************************************************************/
 
-
+/**
+ * TRHtree's topOfTree setter
+ * @param tree
+ * @param node
+ */
 int TRHsetTopOfTree(TRHtree* tree, TRHnode* node)
 {
   tree->topOfTree = node;
@@ -31,6 +35,11 @@ int TRHsetTopOfTree(TRHtree* tree, TRHnode* node)
 }
 
 
+/**
+ * TRHtree's topOfTree getter
+ * @param tree
+ * @return TRHnode* topOfTree's value
+ */
 TRHnode* TRHgetTopOfTree(TRHtree* tree)
 {
   return tree->topOfTree;
@@ -48,6 +57,11 @@ TRHnode** TRHgetTopOfTreeAddr(TRHtree* tree)
  *****************************************************************************/
 
 
+/**
+ * TRHtree's checker
+ * @param tree
+ * @return int 1 si l'abre est null, 0 sinon.
+ */
 int TRHisEmptyTree(TRHtree* tree)
 {
   if(tree == NULL)
@@ -56,6 +70,12 @@ int TRHisEmptyTree(TRHtree* tree)
 }
 
 
+/**
+ * TRHtopOfTree's checker
+ * @param tree
+ * @param node
+ * @return int 1 si l'abre est vide, 0 sinon.
+ */
 int TRHisTopOfTree(TRHtree* tree, TRHnode* node)
 {
   if(TRHgetTopOfTree(tree) == node)
@@ -69,6 +89,11 @@ int TRHisTopOfTree(TRHtree* tree, TRHnode* node)
  *****************************************************************************/
 
 
+/**
+ * TRHtree's alloc
+ * @param node content of the new TRHTree
+ * @return TRHtree* le nouvel arbre créé
+ */
 TRHtree* TRHinitTreeWithNode(TRHnode* node)
 {
   TRHtree* tree = (TRHtree*)malloc(sizeof(TRHtree));
@@ -77,6 +102,10 @@ TRHtree* TRHinitTreeWithNode(TRHnode* node)
 }
 
 
+/**
+ * TRHtree's empty alloc
+ * @return TRHtree* le nouvel arbre créé
+ */
 TRHtree* TRHinitEmptyTree()
 {
   return TRHinitTreeWithNode(NULL);
@@ -87,6 +116,11 @@ TRHtree* TRHinitEmptyTree()
  * Fonctions de free memory
  *****************************************************************************/
 
+/**
+ * TRHtree's free.
+ * Libère l'espace alloué à un arbre.
+ * @param tree
+ */
 int TRHfreeTree(TRHtree* tree)
 {
   if(!TRHisEmptyTree(tree)){
@@ -102,16 +136,32 @@ int TRHfreeTree(TRHtree* tree)
  * Fonctions de traitement
  *****************************************************************************/
 
+/**
+ * TRHtree's add word.
+ * Insere un mot dans l'abre.
+ * @param tree
+ * @param word the word to add
+ * @param size size of word
+ * @param value
+ */
 int TRHaddWord(TRHtree* tree, char* word, int size, int value)
 {
   TRHaddWordRecursive(TRHgetTopOfTreeAddr(tree),word,size,value);
   return 0;
 }
 
+/**
+ * TRHtree's add word recursive.
+ * Insere un mot dans l'abre en parcourant l'un des noeuds fils a chaque fois.
+ * @param node
+ * @param word the word to add
+ * @param size size of word
+ * @param value
+ */
 int TRHaddWordRecursive(TRHnode** node, char* word, int size, int value)
 {
-  if (TRHisEmptyNode(*node) && strlen(word) == 1){
-    *node = TRHaddWordBuildHypster(*node,word,value);
+  if (TRHisEmptyNode(*node) && size == 1){
+    *node = TRHaddWordBuildHypster(*node,word,size,value);
     return 0;
   }
   else {
@@ -119,26 +169,32 @@ int TRHaddWordRecursive(TRHnode** node, char* word, int size, int value)
       TRHaddWordRecursive(TRHgetLowChildAddr(*node),word,size,value);
     else if (word[0] > TRHgetContent(*node))
       TRHaddWordRecursive(TRHgetHighChildAddr(*node),word,size,value);
-    else if( strlen(word) == 1)
+    else if( size == 1)
       TRHsetValue(*node,value);
     else
-      TRHaddWordRecursive(TRHgetEqualChildAddr(*node),&word[1],size,value);
+      TRHaddWordRecursive(TRHgetEqualChildAddr(*node),&word[1],size-1,value);
     return 0;
   }
   return -1;
 }
 
-TRHnode* TRHaddWordBuildHypster(TRHnode *node, char* word, int value)
+/**
+ * TRHtree's add word build hypster.
+ * Construit une branche de l'arbre en inserant le mot word.
+ * @param node
+ * @param word the word to add
+ * @param size size of word
+ * @param value
+ * @return TRHnode* la branche du mot construite
+ */
+TRHnode* TRHaddWordBuildHypster(TRHnode *node, char* word,int size, int value)
 {
   TRHnode* n = NULL;
-  if (strlen(word) == 1)
+  if (size == 1)
     return TRHinitNodeWithContentAndValue(word[0],value);
   else{
     n = TRHinitNodeWithContentAndValue(word[0],value);
-    TRHsetEqualChild(n,TRHaddWordBuildHypster(n,&word[1],value));
+    TRHsetEqualChild(n,TRHaddWordBuildHypster(n,&word[1],size-1,value));
     return TRHgetEqualChild(node);
   }
 }
-
-
-

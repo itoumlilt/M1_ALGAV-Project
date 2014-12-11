@@ -16,6 +16,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <dirent.h>
 
 
 #include <BRD_API.h>
@@ -27,6 +28,8 @@ int BRDcountWordsFromNode(BRDnode* node);
 int BRDcountNullNodesFromNode(BRDnode* node);
 int BRDcountHeightFromNode(BRDnode* node);
 ListWord* BRDinitListWordFromNode(BRDnode* node, ListWord** end, char* word, int size);
+void BRDcountAverageDepthFromNode(BRDnode* node, AverageDepth** ad, int h);
+BRDnode* BRDmergeTwoNodesRecursive(BRDnode* n1, BRDnode* n2);
 /*****************************************************************************/
 
 
@@ -83,6 +86,140 @@ BRDtree* BRDinitTreeFromFile(char* file)
   return tree;
 }
 
+BRDtree* BRDinitTreeFromShakespeareFiles()
+{
+  /* init */
+  BRDtree* tree = BRDinitEmptyTree();
+  char lu;
+  char word[WORD_MAX_SIZE];
+  memset(word, '\0', WORD_MAX_SIZE);
+  int i=0;
+  int nbWords=0;
+  DIR *dir;
+  struct dirent *ent;
+  int fd;
+
+  char* testDir = "../testDir/shakespeare/";
+  char file[128];
+
+
+  /* parcours */
+  if ((dir = opendir(testDir)) != NULL) {
+    while((ent = readdir (dir)) != NULL) {
+      if(ent->d_name[0] != '.'){
+	memset(file, '\0', 128);
+	strcat(file, testDir);
+	strcat(file, ent->d_name);
+	if( (fd = open(file, O_RDONLY)) == -1){
+	  fprintf(stderr, "Error: open file %s\n", file);
+	  exit(1);
+	}
+	/* read and construct */
+	while( read(fd, &lu, 1) ){
+	  if(isSeparator(lu)){
+	    word[i] = '\0';
+	    if(i){
+	      BRDaddWord(tree, word, i); /* @TODO sera fait par un autre thread */
+	      nbWords++;
+	    }
+	    i=0;
+	  } else {
+	    word[i] = lu;
+	    i++;
+	  }
+	}
+	/* on rajoute le dernier mot s'il faut */
+	if(i){
+	  word[i] = '\0';
+	  BRDaddWord(tree, word, i);
+	  nbWords++;
+	}
+	/* fermeture du fichier */
+	close(fd);
+      }
+    }
+    closedir (dir);
+  }
+  return tree;
+}
+
+BRDtree* BRDmergeTwoTrees(BRDtree* tree1, BRDtree* tree2)
+{
+  return BRDinitTreeWithNode(BRDmergeTwoNodesRecursive(BRDgetTopOfTree(tree1),
+						       BRDgetTopOfTree(tree2)
+						       )
+			     );
+}
+
+BRDnode* BRDmergeTwoNodesRecursive(BRDnode* n1, BRDnode* n2)
+{
+  BRDnode* node;
+
+  if( !n1 ) {
+    node = BRDinitNodeWithValue(BRDgetContent(n2));
+    if( BRDhasNextSibling(n2) )
+      BRDsetNextSibling(node,
+			BRDmergeTwoNodesRecursive(NULL,
+						  BRDgetNextSibling(n2)
+						  )
+			);
+    if( !BRDisEOWNode(n2) ){
+      BRDsetFirstChild(node,
+		       BRDmergeTwoNodesRecursive(BRDgetFirstChild(n2),
+						 NULL)
+		       );
+    }
+    return node;
+  }
+
+  if( !n2 ) {
+    node = BRDinitNodeWithValue(BRDgetContent(n1));
+    if( BRDhasNextSibling(n1) )
+      BRDsetNextSibling(node,
+			BRDmergeTwoNodesRecursive(NULL,
+						  BRDgetNextSibling(n1)
+						  )
+			);
+    if( !BRDisEOWNode(n1) ){
+      BRDsetFirstChild(node,
+		       BRDmergeTwoNodesRecursive(BRDgetFirstChild(n1),
+						 NULL)
+		       );
+    }
+    return node;
+  }
+  
+  if( BRDgetContent(n1) == BRDgetContent(n2) ){
+    node = BRDinitNodeWithValue(BRDgetContent(n1));
+    if( BRDhasNextSibling(n1) || BRDhasNextSibling(n2) )
+      BRDsetNextSibling(node,
+			BRDmergeTwoNodesRecursive(BRDgetNextSibling(n1),
+						  BRDgetNextSibling(n2))
+			);
+    if( !BRDisEOWNode(n1) )
+      BRDsetFirstChild(node,
+		       BRDmergeTwoNodesRecursive(BRDgetFirstChild(n1),
+						 BRDgetFirstChild(n2))
+		       );
+  }
+  else if( BRDgetContent(n1) < BRDgetContent(n2)){
+    node = BRDinitNodeWithValue(BRDgetContent(n1));
+    BRDsetNextSibling(node,
+		      BRDmergeTwoNodesRecursive(BRDgetNextSibling(n1),
+						n2));
+    BRDsetFirstChild(node, BRDmergeTwoNodesRecursive(BRDgetFirstChild(n1), NULL));
+  }
+  else {
+    node = BRDinitNodeWithValue(BRDgetContent(n2));
+    BRDsetNextSibling(node,
+		      BRDmergeTwoNodesRecursive(n1,BRDgetNextSibling(n2))
+		      );
+    BRDsetFirstChild(node, BRDmergeTwoNodesRecursive(BRDgetFirstChild(n2), NULL));
+  }
+
+  return node;
+}
+
 /******************************************************************************
  * Fonctions de recherche
  *****************************************************************************/
@@ -126,6 +263,8 @@ ListWord* BRDinitListWordFromNode(BRDnode* node, ListWord** end, char* word, int
   ListWord* listWord = NULL;
   ListWord* childEnd = NULL;
 
+  printf("Node %c\n", BRDgetContent(node));
+  
   if( !BRDisEmptyNextSibling(node) )
     next = BRDinitListWordFromNode(BRDgetNextSibling(node), end,  word, size);
 
@@ -144,6 +283,8 @@ ListWord* BRDinitListWordFromNode(BRDnode* node, ListWord** end, char* word, int
   } else {
     end = &childEnd;
   }
+
+  printf("Ret Node %c\n", BRDgetContent(node));
 
   return listWord;
 }
@@ -210,8 +351,28 @@ int BRDcountHeightFromNode(BRDnode* node)
 
 int BRDcountAverageDepth(BRDtree* tree)
 {
-  /* @TODO réaliser la strcut AverageDepth puis la récu est facile */
-  return 0;
+  AverageDepth* ad = ADinit();
+
+  BRDcountAverageDepthFromNode(BRDgetTopOfTree(tree), &ad, 0);
+
+  int averageDepth = ADcount(ad);
+  
+  ADfree(ad);
+
+  return averageDepth;
+}
+
+void BRDcountAverageDepthFromNode(BRDnode* node, AverageDepth** ad, int h)
+{
+  if( BRDhasNextSibling(node) )
+    BRDcountAverageDepthFromNode(BRDgetNextSibling(node), ad, h);
+
+  ADincrementNbNodes(*ad);
+  
+  if( BRDisEOWNode(node) )
+    ADaddHeight(*ad, h);
+  else
+    BRDcountAverageDepthFromNode(BRDgetFirstChild(node), ad, h+1);
 }
 
 int BRDcountTreePrefixeOccurence(BRDtree* tree, char* word, int size)

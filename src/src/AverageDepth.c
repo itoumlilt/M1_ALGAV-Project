@@ -8,43 +8,72 @@
  * @package waye/M1/ALGAV
  */
 
-#ifndef __LISTWORD_H__
-#define __LISTWORD_H__
+#include <stdio.h>
+#include <stdlib.h>
 
-typedef struct _ListWord {
-  char* word;
-  struct _ListWord* nextWord;
-} ListWord;
+#include <AverageDepth.h>
 
 /******************************************************************************
- * Init functions
+ * Getters / Setters
  *****************************************************************************/
-ListWord* LWinitWithWord(char* word, int size);
+int ADgetNbNodes(AverageDepth* ad)
+{
+  return ad->nbNodes;
+}
+
+void ADsetNbNodes(AverageDepth* ad, int nbNodes)
+{
+  ad->nbNodes = nbNodes;
+}
+
+int ADgetSumHeights(AverageDepth* ad)
+{
+  return ad->sumHeights;
+}
+void ADsetSumHeights(AverageDepth* ad, int sumHeights)
+{
+  ad->sumHeights = sumHeights;
+}
+
 
 /******************************************************************************
- * Getter / Setter
+ * Traitement
  *****************************************************************************/
-char* LWgetWord(ListWord* listWord);
-void LWsetWord(ListWord* listWord, char* word, int size);
+void ADincrementNbNodes(AverageDepth* ad)
+{
+  ADsetNbNodes(ad, ADgetNbNodes(ad) + 1);
+}
 
-ListWord* LWgetNextWord(ListWord* listWord);
-void LWsetNextWord(ListWord* listWord,
-		   ListWord* nextWord);
+void ADaddHeight(AverageDepth* ad, int height)
+{
+  ADsetSumHeights(ad, ADgetSumHeights(ad) + height);
+}
 
 /******************************************************************************
- * fonctions de check
+ * Calcul
  *****************************************************************************/
-int LWisEmptyNextWord(ListWord* listWord);
+int ADcount(AverageDepth* ad)
+{
+  return (ADgetSumHeights(ad)/ADgetNbNodes(ad));
+}
 
 /******************************************************************************
- * fonctions d'affichage
+ * Init
  *****************************************************************************/
-void LWprintAllWords(ListWord* listWord);
+AverageDepth* ADinit()
+{
+  AverageDepth* ad = (AverageDepth*)malloc(sizeof(AverageDepth));
+
+  ADsetNbNodes(ad, 0);
+  ADsetSumHeights(ad, 0);
+
+  return ad;
+}
 
 /******************************************************************************
- * Free memory
+ * Free
  *****************************************************************************/
-int LWfree(ListWord* listWord);
-int LWfreeRecursive(ListWord* listWord);
-
-#endif
+void ADfree(AverageDepth* ad)
+{
+  free(ad);
+}

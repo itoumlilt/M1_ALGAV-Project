@@ -66,6 +66,20 @@ int LWisEmptyNextWord(ListWord* listWord)
 }
 
 /******************************************************************************
+ * fonctions d'affichage
+ *****************************************************************************/
+void LWprintAllWords(ListWord* listWord)
+{
+  ListWord* lw = listWord;
+
+  while( lw ){
+    printf("%s\n", LWgetWord(lw));
+    lw = LWgetNextWord(lw);
+  }
+  
+}
+
+/******************************************************************************
  * Free memory
  *****************************************************************************/
 int LWfree(ListWord* listWord)

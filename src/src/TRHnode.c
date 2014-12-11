@@ -15,19 +15,30 @@
 #include <string.h>
 #include <TRHnode.h>
 
+/* init */
+int global_id = 0;
 
 /******************************************************************************
  * Fonctions de gestion de la structure TRHnode
  * ( ou primitives en langage STL ... )
  *****************************************************************************/
 
-
+/**
+ * TRHnode's content getter
+ * @param node
+ * @return char content's value
+ */
 char TRHgetContent(TRHnode* node)
 {
   return node->content;
 }
 
 
+/**
+ * TRHnode's content setter
+ * @param node
+ * @param content
+ */
 int TRHsetContent(TRHnode* node, char content)
 {
   node->content = content;
@@ -35,12 +46,22 @@ int TRHsetContent(TRHnode* node, char content)
 }
 
 
+/**
+ * TRHnode's value getter
+ * @param node
+ * @return int value's value
+ */
 int TRHgetValue(TRHnode* node)
 {
   return node->value;
 }
 
 
+/**
+ * TRHnode's value setter
+ * @param node
+ * @param value
+ */
 int TRHsetValue(TRHnode* node, int value)
 {
   node->value = value;
@@ -48,12 +69,22 @@ int TRHsetValue(TRHnode* node, int value)
 }
 
 
+/**
+ * TRHnode's id getter
+ * @param node
+ * @return int id's global_id
+ */
 int TRHgetId(TRHnode* node)
 {
   return node->id;
 }
 
 
+/**
+ * TRHnode's value setter
+ * @param node
+ * @param int id's value
+ */
 int TRHsetId(TRHnode* node, int id)
 {
   node->id = id;
@@ -61,6 +92,11 @@ int TRHsetId(TRHnode* node, int id)
 }
 
 
+/**
+ * TRHnode's lowChild getter
+ * @param node
+ * @return TRHnode* node's low child
+ */
 TRHnode* TRHgetLowChild(TRHnode* node)
 {
   return node->lowChild;
@@ -73,6 +109,11 @@ TRHnode** TRHgetLowChildAddr(TRHnode* node)
 }
 
 
+/**
+ * TRHnode's equalChild getter
+ * @param node
+ * @return TRHnode* node's equal child
+ */
 TRHnode* TRHgetEqualChild(TRHnode* node)
 {
   return node ->equalChild;
@@ -84,6 +125,12 @@ TRHnode** TRHgetEqualChildAddr(TRHnode* node)
   return &(node->equalChild);
 }
 
+
+/**
+ * TRHnode's highChild getter
+ * @param node
+ * @return TRHnode* node's high child
+ */
 TRHnode* TRHgetHighChild(TRHnode* node)
 {
   return node ->highChild;
@@ -96,6 +143,11 @@ TRHnode** TRHgetHighChildAddr(TRHnode* node)
 }
 
 
+/**
+ * Check if a TRHnode has a lowChild
+ * @param node
+ * @return 1 if node has a low child, 0 else.
+ */
 int TRHhasLowChild(TRHnode* node)
 {
   if(!TRHisEmptyNode(TRHgetLowChild(node)))
@@ -104,6 +156,11 @@ int TRHhasLowChild(TRHnode* node)
 }
 
 
+/**
+ * TRHnode's lowChild setter
+ * @param node
+ * @param lowChild
+ */
 int TRHsetLowChild(TRHnode* node, TRHnode* lowChild)
 {
   TRHsetLowChild(node,lowChild);
@@ -111,6 +168,11 @@ int TRHsetLowChild(TRHnode* node, TRHnode* lowChild)
 }
 
 
+/**
+ * Check if a TRHnode has a equalChild
+ * @param node
+ * @return 1 if node has a equal child, 0 else.
+ */
 int TRHhasEqualChild(TRHnode* node)
 {
   if(!TRHisEmptyNode(TRHgetEqualChild(node)))
@@ -119,6 +181,11 @@ int TRHhasEqualChild(TRHnode* node)
 }
 
 
+/**
+ * TRHnode's equalChild setter
+ * @param node
+ * @param equalChild
+ */
 int TRHsetEqualChild(TRHnode* node, TRHnode* equalChild)
 {
   TRHsetEqualChild(node,equalChild);
@@ -126,6 +193,11 @@ int TRHsetEqualChild(TRHnode* node, TRHnode* equalChild)
 }
 
 
+/**
+ * Check if a TRHnode has a highChild
+ * @param node
+ * @return 1 if node has a high child, 0 else.
+ */
 int TRHhasHighChild(TRHnode* node)
 {
   if(!TRHisEmptyNode(TRHgetHighChild(node)))
@@ -134,6 +206,11 @@ int TRHhasHighChild(TRHnode* node)
 }
 
 
+/**
+ * TRHnode's highChild setter
+ * @param node
+ * @param highChild
+ */
 int TRHsetHighChild(TRHnode* node, TRHnode* highChild)
 {
   TRHsetHighChild(node,highChild);;
@@ -146,6 +223,11 @@ int TRHsetHighChild(TRHnode* node, TRHnode* highChild)
  *****************************************************************************/
 
 
+/**
+ * TRHnode's checker
+ * @param node
+ * @return int 1 si le noeud est vide, 0 sinon.
+ */
 int TRHisEmptyNode(TRHnode* node)
 {
   if(node == NULL)
@@ -154,6 +236,11 @@ int TRHisEmptyNode(TRHnode* node)
 }
 
 
+/**
+ * TRHEndOfWord's checker
+ * @param node
+ * @return int 1 si le noeud est la fin d'un mot, 0 sinon.
+ */
 int TRHisEOWNode(TRHnode* node)
 {
   if(TRHgetValue(node) != -1)
@@ -162,6 +249,11 @@ int TRHisEOWNode(TRHnode* node)
 }
 
 
+/**
+ * TRHnode's checker
+ * @param node
+ * @return int 1 si le noeud est une feuille, 0 sinon.
+ */
 int TRHisEndOfTrie(TRHnode* node)
 {
   if(!TRHhasLowChild(node) && !TRHhasEqualChild(node) && !TRHhasHighChild(node))
@@ -175,6 +267,11 @@ int TRHisEndOfTrie(TRHnode* node)
  *****************************************************************************/
 
 
+/**
+ * TRHnode's alloc
+ * @param value content of the new TRHnode
+ * @return TRHnode* le nouveau noeud créé
+ */
 TRHnode* TRHinitNodeWithContent(char content)
 {
   TRHnode* node = (TRHnode*) malloc(sizeof(TRHnode));
@@ -193,6 +290,12 @@ TRHnode* TRHinitNodeWithContent(char content)
 }
 
 
+/**
+ * TRHnode's alloc
+ * @param value content of the new TRHnode
+ * @param value value of the new TRHnode
+ * @return TRHnode* le nouveau noeud créé
+ */
 TRHnode* TRHinitNodeWithContentAndValue(char content, int value)
 {
   TRHnode* node = TRHinitNodeWithContent(content);
@@ -206,6 +309,11 @@ TRHnode* TRHinitNodeWithContentAndValue(char content, int value)
  *****************************************************************************/
 
 
+/**
+ * TRHnode's free.
+ * Libère l'espace alloué à un noeud.
+ * @param node
+ */
 int TRHfreeNode(TRHnode* node)
 {
   free(node);
@@ -213,8 +321,11 @@ int TRHfreeNode(TRHnode* node)
 }
 
 
+/**
+ * TRHnode's recursive free.
+ * @param node adresse du noeud a partir duquel on veux commencer le parcours
+ */
 /* Je te laisse verifier au cas ou y'a une meilleur façon de faire ça */
-
 int TRHfreeNodeRecursive(TRHnode* node)
 {
   if(TRHisEndOfTrie(node))

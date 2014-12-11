@@ -8,43 +8,42 @@
  * @package waye/M1/ALGAV
  */
 
-#ifndef __LISTWORD_H__
-#define __LISTWORD_H__
+#ifndef __AVERAGEDEPTH_H__
+#define __AVERAGEDEPTH_H__
 
-typedef struct _ListWord {
-  char* word;
-  struct _ListWord* nextWord;
-} ListWord;
-
-/******************************************************************************
- * Init functions
- *****************************************************************************/
-ListWord* LWinitWithWord(char* word, int size);
+typedef struct _AverageDepth {
+  int nbNodes;
+  int sumHeights;
+} AverageDepth;
 
 /******************************************************************************
- * Getter / Setter
+ * Getters / Setters
  *****************************************************************************/
-char* LWgetWord(ListWord* listWord);
-void LWsetWord(ListWord* listWord, char* word, int size);
+int ADgetNbNodes(AverageDepth* ad);
+void ADsetNbNodes(AverageDepth* ad, int nbNodes);
 
-ListWord* LWgetNextWord(ListWord* listWord);
-void LWsetNextWord(ListWord* listWord,
-		   ListWord* nextWord);
-
-/******************************************************************************
- * fonctions de check
- *****************************************************************************/
-int LWisEmptyNextWord(ListWord* listWord);
+int ADgetSumHeights(AverageDepth* ad);
+void ADsetSumHeights(AverageDepth* ad, int sumHeights);
 
 /******************************************************************************
- * fonctions d'affichage
+ * Traitement
  *****************************************************************************/
-void LWprintAllWords(ListWord* listWord);
+void ADincrementNbNodes(AverageDepth* ad);
+void ADaddHeight(AverageDepth* ad, int height);
 
 /******************************************************************************
- * Free memory
+ * Calcul
  *****************************************************************************/
-int LWfree(ListWord* listWord);
-int LWfreeRecursive(ListWord* listWord);
+int ADcount(AverageDepth* ad);
+
+/******************************************************************************
+ * Init
+ *****************************************************************************/
+AverageDepth* ADinit();
+
+/******************************************************************************
+ * Free
+ *****************************************************************************/
+void ADfree(AverageDepth* ad);
 
 #endif

@@ -53,7 +53,7 @@ int TRHfreeTree(TRHtree* tree);
 
 int TRHaddWord(TRHtree* tree, char* word, int size, int value);
 int TRHaddWordRecursive(TRHnode** node, char* word, int size, int value);
-TRHnode* TRHaddWordBuildHypster(TRHnode *node, char* word, int value);
+TRHnode* TRHaddWordBuildHypster(TRHnode *node, char* word, int size, int value);
 
 /******************************************************************************
  * Fonctions de recherche
