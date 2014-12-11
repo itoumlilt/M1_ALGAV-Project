@@ -15,3 +15,4 @@ OK - unit test toute l'oeurvre de shake
 OK - comparaison des temps
    - comparaison des deux structs
 OK - Affichage visuel
+   - courbe performances

@@ -50,7 +50,7 @@ BRDtree* BRDinitTreeFromFile(char* file)
     /* @TODO clean exit */
     exit(1);
   }
-  
+
   /* init */
   BRDtree* tree = BRDinitEmptyTree();
   char lu;
@@ -284,7 +284,11 @@ ListWord* BRDinitListWordFromNode(BRDnode* node, ListWord** end, char* word, int
     end = &childEnd;
   }
 
-  printf("Ret Node %c\n", BRDgetContent(node));
+  if( !childEnd )
+    printf("Ret Node %c childEnd NULL\n", BRDgetContent(node));
+  else
+    printf("Ret Node %c childEnd notNULL\n", BRDgetContent(node));
+
 
   return listWord;
 }
@@ -375,7 +379,7 @@ void BRDcountAverageDepthFromNode(BRDnode* node, AverageDepth** ad, int h)
     BRDcountAverageDepthFromNode(BRDgetFirstChild(node), ad, h+1);
 }
 
-int BRDcountTreePrefixeOccurence(BRDtree* tree, char* word, int size)
+int BRDcountTreePrefixeOccurrence(BRDtree* tree, char* word, int size)
 {
   BRDnode* node = BRDgetTopOfTree(tree);
   int i;

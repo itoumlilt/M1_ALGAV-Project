@@ -36,9 +36,7 @@ int main(int argc, char** argv)
   ListWord* lw = BRDgetListWordFromTree(tree);
   end = clock();
   time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-  printf("l\n");
   LWprintAllWords(lw);
-  printf("ll\n");
   LWfreeRecursive(lw);
   printf(" Temps de création de la liste : %f sec\n\n", time_spent);
   

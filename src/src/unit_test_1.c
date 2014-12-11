@@ -56,6 +56,39 @@ int main(int argc, char** argv)
   printf(" Nombre total de mots = %d\n", nbMots);
   printf(" Temps d'exec : %f sec\n\n", time_spent);
 
+  printf("5. comptage nil:\n");
+  begin = clock();
+  nbMots = BRDcountTreeNullNodes(tree);
+  end = clock();
+  time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+  printf(" Nombre total de null = %d\n", nbMots);
+  printf(" Temps d'exec : %f sec\n\n", time_spent);
+
+  printf("6. Hauteur de l'arbre:\n");
+  begin = clock();
+  nbMots = BRDcountTreeHeight(tree);
+  end = clock();
+  time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+  printf(" Hauteur de l'arbre = %d\n", nbMots);
+  printf(" Temps d'exec : %f sec\n\n", time_spent);
+
+  printf("7. profondeur moyenne:\n");
+  begin = clock();
+  nbMots = BRDcountAverageDepth(tree);
+  end = clock();
+  time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+  printf(" profondeur moyenne = %d\n", nbMots);
+  printf(" Temps d'exec : %f sec\n\n", time_spent);
+
+  printf("8. Nb prefixe 'ac' :\n");
+  begin = clock();
+  nbMots = BRDcountTreePrefixeOccurrence(tree, "ac", 2);
+  end = clock();
+  time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+  printf(" Nb prefixe = %d\n", nbMots);
+  printf(" Temps d'exec : %f sec\n\n", time_spent);
+
+
   printf(" BRDexportSVG\n");
   BRDexportToSvgFile(tree, "./svg/BRD.svg");
   
