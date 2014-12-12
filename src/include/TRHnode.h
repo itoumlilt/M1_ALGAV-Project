@@ -1,12 +1,16 @@
 /**
  * ALGAV Project
- * BRDnode component Header
+ * TRHnode component header
+ *
+ * Amin's version edited by toumlilt
  *
  * @author Mohamed Amin AFFES <mohamed.af@hotmail.fr>
- * @copyright (c) 2014, affes
+ * @author Ilyas Toumlilt <toumlilt.ilyas@gmail.com> ( v2.0 )
  *
- * @version 1.0
- * @package waye/M1/ALGAV
+ * @copyright (c) 2014, toumlilt
+ *
+ * @version 2.0
+ * @package toumlilt/M1/ALGAV
  */
 
 #ifndef __TRHNODE_H__
@@ -15,60 +19,54 @@
 extern int global_id;
 
 typedef struct _TRHnode {
-  char content;
-  int value;
-  int id;
+  char content; /* caractère représenté par le noeud */
+  int keyValue; /* non vide ( != -1 ) lorsque le noeud est une clé */
+  int id; /* unique par noeud, pour la représentation graphique */
   struct _TRHnode *lowChild;
   struct _TRHnode *equalChild;
   struct _TRHnode *highChild;
 } TRHnode;
 
 /******************************************************************************
- * Fonctions de gestion de la structure TRHnode
- * ( ou primitives en langage STL ... )
+ * Getters / Setters ( primitives )
  *****************************************************************************/
-
 char TRHgetContent(TRHnode* node);
-int TRHsetContent(TRHnode* node, char content);
+void TRHsetContent(TRHnode* node, char content);
 
-int TRHgetValue(TRHnode* node);
-int TRHsetValue(TRHnode* node, int value);
+int TRHgetKeyValue(TRHnode* node);
+void TRHsetKeyValue(TRHnode* node, int keyValue);
 
 int TRHgetId(TRHnode* node);
-int TRHsetId(TRHnode* node, int id);
+void TRHsetId(TRHnode* node);
 
 TRHnode* TRHgetLowChild(TRHnode* node);
 TRHnode** TRHgetLowChildAddr(TRHnode* node);
+void TRHsetLowChild(TRHnode* node, TRHnode* lowChild);
 
 TRHnode* TRHgetEqualChild(TRHnode* node);
 TRHnode** TRHgetEqualChildAddr(TRHnode* node);
+void TRHsetEqualChild(TRHnode* node, TRHnode* equalChild);
 
 TRHnode* TRHgetHighChild(TRHnode* node);
 TRHnode** TRHgetHighChildAddr(TRHnode* node);
-
-int TRHhasLowChild(TRHnode* node);
-int TRHsetLowChild(TRHnode* node, TRHnode* lowChild);
-
-int TRHhasEqualChild(TRHnode* node);
-int TRHsetEqualChild(TRHnode* node, TRHnode* equalChild);
-
-int TRHhasHighChild(TRHnode* node);
-int TRHsetHighChild(TRHnode* node, TRHnode* highChild);
+void TRHsetHighChild(TRHnode* node, TRHnode* highChild);
 
 /******************************************************************************
- * Fonctions de tests sur la structure TRHnode
+ * Fonctions de tests, checkers
  *****************************************************************************/
-
 int TRHisEmptyNode(TRHnode* node);
-int TRHisEOWNode(TRHnode* node);
-int TRHisEndOfTrie(TRHnode* node);
+int TRHisEOWNode(TRHnode* node); /* EOW = End Of Word */
+int TRHisEndOfTree(TRHnode* node);
+
+int TRHhasLowChild(TRHnode* node);
+int TRHhasEqualChild(TRHnode* node);
+int TRHhasHighChild(TRHnode* node);
 
 /******************************************************************************
  * Fonctions d'initialisation
  *****************************************************************************/
-
 TRHnode* TRHinitNodeWithContent(char content);
-TRHnode* TRHinitNodeWithContentAndValue(char content, int value);
+TRHnode* TRHinitNodeWithContentAndKeyValue(char content, int keyValue);
 
 /******************************************************************************
  * Fonctions de free memory

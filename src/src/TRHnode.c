@@ -1,18 +1,21 @@
 /**
  * ALGAV Project
- * BRDnode component Header
+ * TRHnode component implementation
+ *
+ * Amin's version edited by toumlilt
  *
  * @author Mohamed Amin AFFES <mohamed.af@hotmail.fr>
- * @copyright (c) 2014, AFFES
+ * @author Ilyas Toumlilt <toumlilt.ilyas@gmail.com> ( v2.0 )
  *
- * @version 1.0
- * @package waye/M1/ALGAV
+ * @copyright (c) 2014, toumlilt
+ *
+ * @version 2.0
+ * @package toumlilt/M1/ALGAV
  */
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
-#include <string.h>
+
 #include <TRHnode.h>
 
 /* init */
@@ -39,10 +42,9 @@ char TRHgetContent(TRHnode* node)
  * @param node
  * @param content
  */
-int TRHsetContent(TRHnode* node, char content)
+void TRHsetContent(TRHnode* node, char content)
 {
   node->content = content;
-  return 0;
 }
 
 
@@ -51,9 +53,9 @@ int TRHsetContent(TRHnode* node, char content)
  * @param node
  * @return int value's value
  */
-int TRHgetValue(TRHnode* node)
+int TRHgetKeyValue(TRHnode* node)
 {
-  return node->value;
+  return node->keyValue;
 }
 
 
@@ -62,10 +64,9 @@ int TRHgetValue(TRHnode* node)
  * @param node
  * @param value
  */
-int TRHsetValue(TRHnode* node, int value)
+void TRHsetKeyValue(TRHnode* node, int keyValue)
 {
-  node->value = value;
-  return 0;
+  node->keyValue = keyValue;
 }
 
 
@@ -79,18 +80,11 @@ int TRHgetId(TRHnode* node)
   return node->id;
 }
 
-
-/**
- * TRHnode's value setter
- * @param node
- * @param int id's value
- */
-int TRHsetId(TRHnode* node, int id)
+void TRHsetId(TRHnode* node)
 {
-  node->id = id;
-  return 0;
+  node->id = global_id;
+  glboal_id++;
 }
-
 
 /**
  * TRHnode's lowChild getter
@@ -102,12 +96,20 @@ TRHnode* TRHgetLowChild(TRHnode* node)
   return node->lowChild;
 }
 
-
 TRHnode** TRHgetLowChildAddr(TRHnode* node)
 {
   return &(node->lowChild);
 }
 
+/**
+ * TRHnode's lowChild setter
+ * @param node
+ * @param lowChild
+ */
+void TRHsetLowChild(TRHnode* node, TRHnode* lowChild)
+{
+  node->lowChild = lowChild;
+}
 
 /**
  * TRHnode's equalChild getter
@@ -125,6 +127,15 @@ TRHnode** TRHgetEqualChildAddr(TRHnode* node)
   return &(node->equalChild);
 }
 
+/**
+ * TRHnode's equalChild setter
+ * @param node
+ * @param equalChild
+ */
+void TRHsetEqualChild(TRHnode* node, TRHnode* equalChild)
+{
+  node->equalChild = equalChild;
+}
 
 /**
  * TRHnode's highChild getter
@@ -142,81 +153,15 @@ TRHnode** TRHgetHighChildAddr(TRHnode* node)
   return &(node->highChild);
 }
 
-
-/**
- * Check if a TRHnode has a lowChild
- * @param node
- * @return 1 if node has a low child, 0 else.
- */
-int TRHhasLowChild(TRHnode* node)
-{
-  if(!TRHisEmptyNode(TRHgetLowChild(node)))
-    return 1;
-  return 0;
-}
-
-
-/**
- * TRHnode's lowChild setter
- * @param node
- * @param lowChild
- */
-int TRHsetLowChild(TRHnode* node, TRHnode* lowChild)
-{
-  TRHsetLowChild(node,lowChild);
-  return 0;
-}
-
-
-/**
- * Check if a TRHnode has a equalChild
- * @param node
- * @return 1 if node has a equal child, 0 else.
- */
-int TRHhasEqualChild(TRHnode* node)
-{
-  if(!TRHisEmptyNode(TRHgetEqualChild(node)))
-    return 1;
-  return 0;
-}
-
-
-/**
- * TRHnode's equalChild setter
- * @param node
- * @param equalChild
- */
-int TRHsetEqualChild(TRHnode* node, TRHnode* equalChild)
-{
-  TRHsetEqualChild(node,equalChild);
-  return 0;
-}
-
-
-/**
- * Check if a TRHnode has a highChild
- * @param node
- * @return 1 if node has a high child, 0 else.
- */
-int TRHhasHighChild(TRHnode* node)
-{
-  if(!TRHisEmptyNode(TRHgetHighChild(node)))
-    return 1;
-  return 0;
-}
-
-
 /**
  * TRHnode's highChild setter
  * @param node
  * @param highChild
  */
-int TRHsetHighChild(TRHnode* node, TRHnode* highChild)
+void TRHsetHighChild(TRHnode* node, TRHnode* highChild)
 {
-  TRHsetHighChild(node,highChild);;
-  return 0;
+  node->highChild = highChild;
 }
-
 
 /******************************************************************************
  * Fonctions de tests sur la structure TRHnode
@@ -230,9 +175,9 @@ int TRHsetHighChild(TRHnode* node, TRHnode* highChild)
  */
 int TRHisEmptyNode(TRHnode* node)
 {
-  if(node == NULL)
-    return 1;
-  return 0;
+  if(node)
+    return 0;
+  return 1;
 }
 
 
@@ -243,7 +188,7 @@ int TRHisEmptyNode(TRHnode* node)
  */
 int TRHisEOWNode(TRHnode* node)
 {
-  if(TRHgetValue(node) != -1)
+  if(TRHgetKeyValue(node) != -1)
     return 1;
   return 0;
 }
@@ -254,19 +199,52 @@ int TRHisEOWNode(TRHnode* node)
  * @param node
  * @return int 1 si le noeud est une feuille, 0 sinon.
  */
-int TRHisEndOfTrie(TRHnode* node)
+int TRHisEndOfTree(TRHnode* node)
 {
   if(!TRHhasLowChild(node) && !TRHhasEqualChild(node) && !TRHhasHighChild(node))
     return 1;
   return 0;
 }
 
+/**
+ * Check if a TRHnode has a lowChild
+ * @param node
+ * @return 1 if node has a low child, 0 else.
+ */
+int TRHhasLowChild(TRHnode* node)
+{
+  if(TRHisEmptyNode(TRHgetLowChild(node)))
+    return 0;
+  return 1;
+}
+
+/**
+ * Check if a TRHnode has a equalChild
+ * @param node
+ * @return 1 if node has a equal child, 0 else.
+ */
+int TRHhasEqualChild(TRHnode* node)
+{
+  if(TRHisEmptyNode(TRHgetEqualChild(node)))
+    return 0;
+  return 1;
+}
+
+/**
+ * Check if a TRHnode has a highChild
+ * @param node
+ * @return 1 if node has a high child, 0 else.
+ */
+int TRHhasHighChild(TRHnode* node)
+{
+  if(TRHisEmptyNode(TRHgetHighChild(node)))
+    return 0;
+  return 1;
+}
 
 /******************************************************************************
  * Fonctions d'initialisation
  *****************************************************************************/
-
-
 /**
  * TRHnode's alloc
  * @param value content of the new TRHnode
@@ -274,32 +252,27 @@ int TRHisEndOfTrie(TRHnode* node)
  */
 TRHnode* TRHinitNodeWithContent(char content)
 {
-  TRHnode* node = (TRHnode*) malloc(sizeof(TRHnode));
-
-  TRHsetContent(node,content);
-  TRHsetValue(node,-1);
-  TRHsetId(node,global_id);
-
-  TRHsetLowChild(node,NULL);
-  TRHsetEqualChild(node,NULL);
-  TRHsetHighChild(node,NULL);
-
-  global_id++;
-
-  return node;
+  return TRHinitNodeWithContentAndValue(content, -1);
 }
 
 
 /**
  * TRHnode's alloc
- * @param value content of the new TRHnode
- * @param value value of the new TRHnode
+ * @param content of the new TRHnode
+ * @param value of the new TRHnode
  * @return TRHnode* le nouveau noeud créé
  */
-TRHnode* TRHinitNodeWithContentAndValue(char content, int value)
+TRHnode* TRHinitNodeWithContentAndKeyValue(char content, int keyValue)
 {
-  TRHnode* node = TRHinitNodeWithContent(content);
-  TRHsetValue(node,value);
+  TRHnode* node = (TRHnode*)malloc(sizeof(TRHnode));
+
+  TRHsetContent(node, content);
+  TRHsetValue(node, keyValue);
+  TRHsetId(node);
+  TRHsetLowChild(node,NULL);
+  TRHsetEqualChild(node,NULL);
+  TRHsetHighChild(node,NULL);
+
   return node;
 }
 
@@ -307,17 +280,14 @@ TRHnode* TRHinitNodeWithContentAndValue(char content, int value)
 /******************************************************************************
  * Fonctions de free memory
  *****************************************************************************/
-
-
 /**
  * TRHnode's free.
  * Libère l'espace alloué à un noeud.
  * @param node
  */
-int TRHfreeNode(TRHnode* node)
+void TRHfreeNode(TRHnode* node)
 {
   free(node);
-  return 0;
 }
 
 
@@ -325,16 +295,16 @@ int TRHfreeNode(TRHnode* node)
  * TRHnode's recursive free.
  * @param node adresse du noeud a partir duquel on veux commencer le parcours
  */
-/* Je te laisse verifier au cas ou y'a une meilleur façon de faire ça */
-int TRHfreeNodeRecursive(TRHnode* node)
+void TRHfreeNodeRecursive(TRHnode* node)
 {
-  if(TRHisEndOfTrie(node))
-    return TRHfreeNode(node);
+  if( TRHhasLowChild(node) )
+    TRHfreeNodeRecursive(TRHgetLowChild(node));
 
-  if( TRHfreeNodeRecursive(TRHgetLowChild(node)) != -1
-      && TRHfreeNodeRecursive(TRHgetEqualChild(node)) != -1
-      && TRHfreeNodeRecursive(TRHgetHighChild(node)) != -1)
-    return TRHfreeNode(node);
+  if( TRHhasEqualChild(node) )
+    TRHfreeNodeRecursive(TRHgetEqualChild(node));
 
-  return -1;
+  if( TRHhasHighChild(node) )
+    TRHfreeNodeRecursive(TRHgetHighChild(node));
+
+  TRHfreeNode(node);
 }

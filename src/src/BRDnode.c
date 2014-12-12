@@ -17,8 +17,7 @@
 #include <libASCII.h>
 
 /******************************************************************************
- * Fonctions de gestion de la structure BRDnode
- * ( ou primitives en langage STL ... )
+ * Fonctions de gestion de la structure BRDnode ( primitives )
  *****************************************************************************/
 
 /* BRDnode's content */

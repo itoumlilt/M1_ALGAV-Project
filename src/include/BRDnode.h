@@ -25,8 +25,7 @@ typedef struct _BRDnode {
 } BRDnode;
 
 /******************************************************************************
- * Fonctions de gestion de la structure BRDnode
- * ( ou primitives en langage STL ... )
+ * Fonctions de gestion de la structure BRDnode ( primitives )
  *****************************************************************************/
 char BRDgetContent(BRDnode* node);
 void BRDsetContent(BRDnode* node, char content);
