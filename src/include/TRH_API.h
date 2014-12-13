@@ -1,46 +1,32 @@
 /**
  * ALGAV Project
- * BRDtree component Header
+ * TRH_API public header
  *
  * @author Mohamed Amin AFFES <mohamed.af@hotmail.fr>
- * @copyright (c) 2014, AFFES
+ * @author Ilyas Toumlilt <toumlilt.ilyas@gmail.com> ( v2.0 )
  *
- * @version 1.0
- * @package waye/M1/ALGAV
+ * @copyright (c) 2014, toumlilt
+ *
+ * @version 2.0
+ * @package toumlilt/M1/ALGAV
  */
 
+#include <libASCII.h>
 #include <TRHtree.h>
-#include <BRDtree.h>
-#include <ListWord.h>
-
-#define TRH_API_LVL 1
-
-int init_api();
 
 /******************************************************************************
  * Fonctions de construction :
  *****************************************************************************/
-TRHtree* TRHinitTreeFromFile(char* file);
-ListWord* TRHgetListWordFromTree(TRHtree* tree);
+TRHtree* TRHinitTreeFromFile(char* filename);
 
 /******************************************************************************
- * Fonctions de recherche
+ * Fonctions de search :
  *****************************************************************************/
 int TRHsearchWord(TRHtree* tree, char* word, int size);
+int TRHcountWords(TRHtree* tree);
+int TRHcountNil(TRHtree* tree);
 
 /******************************************************************************
- * Fonctions de calcul
+ * Fonctions de libération de mémoire :
  *****************************************************************************/
-int TRHcountTreeWords(TRHtree* tree);
-int TRHcountTreeNullNodes(TRHtree* tree);
-int TRHcountTreeHeight(TRHtree* tree);
-int TRHcountAverageDepth(TRHtree* tree);
-int TRHcountTreePrefixeOccurrence(TRHtree* tree, char* word, int size);
-
-/******************************************************************************
- * Fonctions de traitement
- *****************************************************************************/
-int TRHremoveWordFromTree(TRHtree* tree, char* word, int size);
-
-/* Fonction de passage d'un tie Hybride a un arbre de la Briandais */
-BRDtree* TRHtoBriandaisFromTree(TRHtree *tree);
+void TRHfree(TRHtree* tree);

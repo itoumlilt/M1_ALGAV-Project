@@ -18,7 +18,6 @@
 #include <fcntl.h>
 #include <dirent.h>
 
-
 #include <BRD_API.h>
 
 /******************************************************************************
@@ -33,11 +32,6 @@ BRDnode* BRDmergeTwoNodesRecursive(BRDnode* n1, BRDnode* n2);
 /*****************************************************************************/
 
 
-int initAPI()
-{
-  return 1;
-}
-
 /******************************************************************************
  * Fonctions de construction :
  *****************************************************************************/
@@ -47,7 +41,6 @@ BRDtree* BRDinitTreeFromFile(char* file)
   int fd;
   if( (fd = open(file, O_RDONLY)) == -1){
     fprintf(stderr, "Error: BRD_API: __LINE__\n");
-    /* @TODO clean exit */
     exit(1);
   }
 
@@ -59,12 +52,12 @@ BRDtree* BRDinitTreeFromFile(char* file)
   int i=0;
   int nbWords=0;
 
-  /* read and construct */
+  /* read and build */
   while( read(fd, &lu, 1) ){
     if(isSeparator(lu)){
       word[i] = '\0';
       if(i){
-	BRDaddWord(tree, word, i); /* @TODO sera fait par un autre thread */
+	BRDaddWord(tree, word, i); 
 	nbWords++;
       }
       i=0;

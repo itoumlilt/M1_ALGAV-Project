@@ -1,12 +1,14 @@
 /**
  * ALGAV Project
- * BRDtree component Header
+ * TRHtree component header
  *
- * @author Ilyas Toumlilt <toumlilt.ilyas@gmail.com>
+ * @author Mohamed Amin AFFES <mohamed.af@hotmail.fr>
+ * @author Ilyas Toumlilt <toumlilt.ilyas@gmail.com> ( v2.0 )
+ *
  * @copyright (c) 2014, toumlilt
  *
- * @version 1.0
- * @package waye/M1/ALGAV
+ * @version 2.0
+ * @package toumlilt/M1/ALGAV
  */
 
 #include <TRHnode.h>
@@ -14,46 +16,44 @@
 #ifndef __TRHTREE_H__
 #define __TRHTREE_H__
 
+extern int global_keyValue;
+
 typedef struct _TRHtree {
   TRHnode* topOfTree;
 } TRHtree;
 
 /******************************************************************************
- * Fonctions de gestion de la structure BRDtree
- * ( ou primitives en langage STL ... )
+ * Getters / Setters ( primitives )
  *****************************************************************************/
-
-int TRHsetTopOfTree(TRHtree* tree, TRHnode* node);
+void TRHsetTopOfTree(TRHtree* tree, TRHnode* node);
 TRHnode* TRHgetTopOfTree(TRHtree* tree);
 TRHnode** TRHgetTopOfTreeAddr(TRHtree* tree);
+
+int TRHgetNewKeyValue();
 
 /******************************************************************************
  * Fonctions de check
  *****************************************************************************/
-
 int TRHisEmptyTree(TRHtree* tree);
 int TRHisTopOfTree(TRHtree* tree, TRHnode* node);
 
 /******************************************************************************
  * Fonctions d'initialisation
  *****************************************************************************/
-
 TRHtree* TRHinitTreeWithNode(TRHnode* node);
 TRHtree* TRHinitEmptyTree();
+TRHnode* TRHinitBranchWithWord(char* word, int size);
 
 /******************************************************************************
  * Fonctions de free memory
  *****************************************************************************/
-
-int TRHfreeTree(TRHtree* tree);
+void TRHfreeTree(TRHtree* tree);
 
 /******************************************************************************
  * Fonctions de traitement
  *****************************************************************************/
-
-int TRHaddWord(TRHtree* tree, char* word, int size, int value);
-int TRHaddWordRecursive(TRHnode** node, char* word, int size, int value);
-TRHnode* TRHaddWordBuildHypster(TRHnode *node, char* word, int size, int value);
+void TRHaddWord(TRHtree* tree, char* word, int size);
+void TRHaddWordToNodeRecursive(TRHnode** node, char* word, int size);
 
 /******************************************************************************
  * Fonctions de recherche

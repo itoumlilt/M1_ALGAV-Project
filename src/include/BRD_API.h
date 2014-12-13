@@ -8,6 +8,7 @@
  * @version 1.0
  * @package waye/M1/ALGAV
  */
+/* @TODO refaire les headers parties BRD */
 
 #ifndef __BRD_API_H__
 #define __BRD_API_H__
@@ -18,10 +19,6 @@
 #include <BRDtree.h>
 #include <ListWord.h>
 #include <AverageDepth.h>
-
-#define API_LVL 1
-
-int initAPI();
 
 /******************************************************************************
  * Fonctions de construction :

@@ -72,7 +72,7 @@ TRHnode* TRHinitNodeWithContentAndKeyValue(char content, int keyValue);
  * Fonctions de free memory
  *****************************************************************************/
 
-int TRHfreeNode(TRHnode* node);
-int TRHfreeNodeRecursive(TRHnode* node);
+void TRHfreeNode(TRHnode* node);
+void TRHfreeNodeRecursive(TRHnode* node);
 
 #endif

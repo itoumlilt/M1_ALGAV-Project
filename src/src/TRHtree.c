@@ -1,26 +1,26 @@
 /**
  * ALGAV Project
- * BRDtree component Header
+ * TRHtree component implementation
  *
  * @author Mohamed Amin AFFES <mohamed.af@hotmail.fr>
- * @copyright (c) 2014, AFFES
+ * @author Ilyas Toumlilt <toumlilt.ilyas@gmail.com> ( v2.0 )
  *
- * @version 1.0
- * @package waye/M1/ALGAV
+ * @copyright (c) 2014, toumlilt
+ *
+ * @version 2.0
+ * @package toumlilt/M1/ALGAV
  */
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-
 
 #include <TRHtree.h>
 
+int global_keyValue = 0;
+
 
 /******************************************************************************
- * Fonctions de gestion de la structure BRDtree
- * ( ou primitives en langage STL ... )
+ * Getters / Setters ( primitives )
  *****************************************************************************/
 
 /**
@@ -28,10 +28,9 @@
  * @param tree
  * @param node
  */
-int TRHsetTopOfTree(TRHtree* tree, TRHnode* node)
+void TRHsetTopOfTree(TRHtree* tree, TRHnode* node)
 {
   tree->topOfTree = node;
-  return 0;
 }
 
 
@@ -51,11 +50,16 @@ TRHnode** TRHgetTopOfTreeAddr(TRHtree* tree)
   return &(tree->topOfTree);
 }
 
+int TRHgetNewKeyValue()
+{
+  global_keyValue++;
+  return global_keyValue-1;
+}
+
 
 /******************************************************************************
  * Fonctions de check
  *****************************************************************************/
-
 
 /**
  * TRHtree's checker
@@ -64,11 +68,10 @@ TRHnode** TRHgetTopOfTreeAddr(TRHtree* tree)
  */
 int TRHisEmptyTree(TRHtree* tree)
 {
-  if(tree == NULL)
+  if(TRHisEmptyNode(TRHgetTopOfTree(tree)))
     return 1;
   return 0;
 }
-
 
 /**
  * TRHtopOfTree's checker
@@ -83,7 +86,6 @@ int TRHisTopOfTree(TRHtree* tree, TRHnode* node)
   return 0;
 }
 
-
 /******************************************************************************
  * Fonctions d'initialisation
  *****************************************************************************/
@@ -97,7 +99,9 @@ int TRHisTopOfTree(TRHtree* tree, TRHnode* node)
 TRHtree* TRHinitTreeWithNode(TRHnode* node)
 {
   TRHtree* tree = (TRHtree*)malloc(sizeof(TRHtree));
+  
   TRHsetTopOfTree(tree,node);
+  
   return tree;
 }
 
@@ -121,14 +125,11 @@ TRHtree* TRHinitEmptyTree()
  * Libère l'espace alloué à un arbre.
  * @param tree
  */
-int TRHfreeTree(TRHtree* tree)
+void TRHfreeTree(TRHtree* tree)
 {
-  if(!TRHisEmptyTree(tree)){
+  if( !TRHisEmptyTree(tree) )
     TRHfreeNodeRecursive(TRHgetTopOfTree(tree));
-    free(tree);
-    return 0;
-  }
-  return -1;
+  free(tree);
 }
 
 
@@ -144,10 +145,9 @@ int TRHfreeTree(TRHtree* tree)
  * @param size size of word
  * @param value
  */
-int TRHaddWord(TRHtree* tree, char* word, int size, int value)
+void TRHaddWord(TRHtree* tree, char* word, int size)
 {
-  TRHaddWordRecursive(TRHgetTopOfTreeAddr(tree),word,size,value);
-  return 0;
+  TRHaddWordToNodeRecursive(TRHgetTopOfTreeAddr(tree), word, size);
 }
 
 /**
@@ -158,43 +158,59 @@ int TRHaddWord(TRHtree* tree, char* word, int size, int value)
  * @param size size of word
  * @param value
  */
-int TRHaddWordRecursive(TRHnode** node, char* word, int size, int value)
+void TRHaddWordToNodeRecursive(TRHnode** node, char* word, int size)
 {
-  if (TRHisEmptyNode(*node) && size == 1){
-    *node = TRHaddWordBuildHypster(*node,word,size,value);
-    return 0;
+  if( !(*node) ){
+    *node = TRHinitBranchWithWord(word, size);
+    return;
+  }
+
+  if( TRHgetContent(*node) < word[0] ) {
+    TRHaddWordToNodeRecursive(TRHgetHighChildAddr(*node), word, size);
+  }
+  else if( TRHgetContent(*node) > word[0] ) {
+    TRHaddWordToNodeRecursive(TRHgetLowChildAddr(*node), word, size);
   }
   else {
-    if (word[0] < TRHgetContent(*node))
-      TRHaddWordRecursive(TRHgetLowChildAddr(*node),word,size,value);
-    else if (word[0] > TRHgetContent(*node))
-      TRHaddWordRecursive(TRHgetHighChildAddr(*node),word,size,value);
-    else if( size == 1)
-      TRHsetValue(*node,value);
-    else
-      TRHaddWordRecursive(TRHgetEqualChildAddr(*node),&word[1],size-1,value);
-    return 0;
+    if( size > 1){
+      TRHaddWordToNodeRecursive(TRHgetEqualChildAddr(*node), word+1, size-1);
+    } else {
+      /* si c'est la dernière lettre */
+      if( !TRHisEOWNode(*node) ) { /* s'il n'est pas déjà EOW */
+	TRHsetKeyValue(*node, TRHgetNewKeyValue());
+      }
+    }
   }
-  return -1;
 }
 
 /**
- * TRHtree's add word build hypster.
- * Construit une branche de l'arbre en inserant le mot word.
+ * TRHtree's add word to node direct building
+ * Construit directement une branche
+ * ( utilisable dans le cas d'un noeud null à l'insertion )
  * @param node
  * @param word the word to add
  * @param size size of word
  * @param value
  * @return TRHnode* la branche du mot construite
  */
-TRHnode* TRHaddWordBuildHypster(TRHnode *node, char* word,int size, int value)
+TRHnode* TRHinitBranchWithWord(char* word, int size)
 {
-  TRHnode* n = NULL;
-  if (size == 1)
-    return TRHinitNodeWithContentAndValue(word[0],value);
-  else{
-    n = TRHinitNodeWithContentAndValue(word[0],value);
-    TRHsetEqualChild(n,TRHaddWordBuildHypster(n,&word[1],size-1,value));
-    return TRHgetEqualChild(node);
+  TRHnode* node = NULL;
+  TRHnode* insNode;
+  int i;
+
+  for(i=0; i<size; i++){
+    if( !i ){
+      node = TRHinitNodeWithContent(word[i]);
+      insNode = node;
+    } else {
+      TRHsetEqualChild(insNode, TRHinitNodeWithContent(word[i]));
+      insNode = TRHgetEqualChild(insNode);
+    }
   }
+
+  if(i) /* si on a inséré quelque chose ... */
+    TRHsetKeyValue(insNode, TRHgetNewKeyValue());
+
+  return node;
 }

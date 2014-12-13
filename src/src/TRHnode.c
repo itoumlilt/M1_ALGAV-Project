@@ -83,7 +83,7 @@ int TRHgetId(TRHnode* node)
 void TRHsetId(TRHnode* node)
 {
   node->id = global_id;
-  glboal_id++;
+  global_id++;
 }
 
 /**
@@ -252,7 +252,7 @@ int TRHhasHighChild(TRHnode* node)
  */
 TRHnode* TRHinitNodeWithContent(char content)
 {
-  return TRHinitNodeWithContentAndValue(content, -1);
+  return TRHinitNodeWithContentAndKeyValue(content, -1);
 }
 
 
@@ -267,7 +267,7 @@ TRHnode* TRHinitNodeWithContentAndKeyValue(char content, int keyValue)
   TRHnode* node = (TRHnode*)malloc(sizeof(TRHnode));
 
   TRHsetContent(node, content);
-  TRHsetValue(node, keyValue);
+  TRHsetKeyValue(node, keyValue);
   TRHsetId(node);
   TRHsetLowChild(node,NULL);
   TRHsetEqualChild(node,NULL);

@@ -56,7 +56,7 @@ $(LIB)/libBRD.a: $(OBJ)/libASCII.o $(OBJ)/BRDnode.o $(OBJ)/BRDtree.o $(OBJ)/List
 	$(AR) $@ $^
 	ranlib $@
 
-$(LIB)/libTRH.a: $(OBJ)/libASCII.o $(OBJ)/TRHnode.o $(OBJ)/TRHtree.o $(OBJ)/ListWord.o $(OBJ)/TRH_API.o $(OBJ)/AverageDepth.o $(OBJ)/TRH_View.o
+$(LIB)/libTRH.a: $(OBJ)/libASCII.o $(OBJ)/TRHnode.o $(OBJ)/TRHtree.o $(OBJ)/TRH_API.o $(OBJ)/TRH_View.o 
 	$(AR) $@ $^
 	ranlib $@
 
@@ -94,9 +94,6 @@ run_unit_test_3: $(BIN)/unit_test_3
 $(BIN)/TRH_unit_test: $(OBJ)/TRH_unit_test.o $(LIB)/libTRH.a
 	$(CC) -o $@ $< -L$(LIB) -lTRH
 TRH_unit_test: $(BIN)/TRH_unit_test
-run_TRH_unit_test: $(BIN)/TRH_unit_test
-	$(BIN)/TRH_unit_test
-
 
 ################################################################################
 # View graphs
@@ -106,9 +103,16 @@ run_TRH_unit_test: $(BIN)/TRH_unit_test
 BRDview :
 	@inkscape svg/BRD.svg 2>/dev/null 
 
+# TRH Graph
+TRHview :
+	dot -Tsvg svg/TRH.dot > svg/TRH.svg;
+	inkscape svg/TRH.svg 
+
 ################################################################################
 # clean repository
 ################################################################################
 clean:
 	rm -rf $(LIB) $(BIN) $(OBJ);
-	echo "" > $(SVG)/BRD.svg
+	echo "" > $(SVG)/BRD.svg;
+	echo "" > $(SVG)/TRH.dot;
+	echo "" > $(SVG)/TRH.svg;
