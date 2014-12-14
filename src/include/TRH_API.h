@@ -13,6 +13,7 @@
 
 #include <libASCII.h>
 #include <TRHtree.h>
+#include <ListWord.h>
 
 /******************************************************************************
  * Fonctions de construction :
@@ -25,6 +26,13 @@ TRHtree* TRHinitTreeFromFile(char* filename);
 int TRHsearchWord(TRHtree* tree, char* word, int size);
 int TRHcountWords(TRHtree* tree);
 int TRHcountNil(TRHtree* tree);
+int TRHcountHeight(TRHtree* tree);
+int TRHcountPrefix(TRHtree* tree, char* word, int size);
+
+/******************************************************************************
+ * Fonctions de génération :
+ *****************************************************************************/
+ListWord* TRHinitListWordFromTree(TRHtree* tree);
 
 /******************************************************************************
  * Fonctions de libération de mémoire :

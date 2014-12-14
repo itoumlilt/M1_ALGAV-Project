@@ -55,8 +55,4 @@ void TRHfreeTree(TRHtree* tree);
 void TRHaddWord(TRHtree* tree, char* word, int size);
 void TRHaddWordToNodeRecursive(TRHnode** node, char* word, int size);
 
-/******************************************************************************
- * Fonctions de recherche
- *****************************************************************************/
-
 #endif

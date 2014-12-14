@@ -32,11 +32,9 @@ void BRDsetContent(BRDnode* node, char content);
 
 BRDnode* BRDgetFirstChild(BRDnode* node);
 BRDnode** BRDgetFirstChildAddr(BRDnode* node);
-int BRDhasFirstChild(BRDnode* node);
 void BRDsetFirstChild(BRDnode* node, BRDnode* firstChild);
 
 BRDnode* BRDgetNextSibling(BRDnode* node);
-int BRDhasNextSibling(BRDnode* node);
 void BRDsetNextSibling(BRDnode* node, BRDnode* nextSibling);
 
 /******************************************************************************
@@ -47,6 +45,8 @@ int BRDisEOWNode(BRDnode* node);
 int BRDisEmptyNextSibling(BRDnode* node);
 int BRDisEmptyFirstChild(BRDnode* node);
 int BRDisFirstChildOf(BRDnode* node, BRDnode* child);
+int BRDhasFirstChild(BRDnode* node);
+int BRDhasNextSibling(BRDnode* node);
 
 /******************************************************************************
  * Fonctions d'initialisation
